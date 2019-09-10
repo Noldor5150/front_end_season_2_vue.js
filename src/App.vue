@@ -1,12 +1,10 @@
 <template>
   <div class="app">
-    <BaseButton @click="handleClick">show</BaseButton>
-    <BaseButton :outlined="true" @click="handleClick">hide</BaseButton>
-    <p
-      v-if="isVisible"
-    >Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti consectetur architecto rem quo! Distinctio, atque rerum, adipisci a error impedit cupiditate iusto dignissimos, voluptatibus amet nisi! Fuga, fugit nam. Reprehenderit.</p>
+    <BaseButton @click="handleClick">ALIO</BaseButton>
+
     <HOne v-if="!isVisible">Sheize</HOne>
     <HOne v-else :capital="true">Hilo</HOne>
+    <Input label-text="Email" type="email" placeholder="test" @input="onInput" />
   </div>
 </template>
 
@@ -15,7 +13,8 @@ export default {
   name: "App",
   components: {
     BaseButton,
-    HOne
+    HOne,
+    Input
   },
   data() {
     return { isVisible: false };
@@ -23,11 +22,15 @@ export default {
   methods: {
     handleClick(event) {
       this.isVisible = !this.isVisible;
+    },
+    onInput(event) {
+      console.log(event);
     }
   }
 };
 import BaseButton from "@/components/BaseButton";
 import HOne from "@/components/HOne";
+import Input from "@/components/Input";
 </script>
 
 

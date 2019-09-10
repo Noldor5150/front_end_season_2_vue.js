@@ -1,5 +1,5 @@
 <template>
-  <button :class="['button', {'button--outlined': outlined}]" @click="handleClick">
+  <button :class="['button', {'button--outshined': outshined}]" @click="handleClick">
     <slot />
   </button>
 </template>
@@ -12,7 +12,7 @@ export default {
     }
   },
   props: {
-    outlined: {
+    outshined: {
       type: [Boolean, String],
       default: false
     }
@@ -23,8 +23,8 @@ export default {
 .button {
   padding: 10px 20px;
   background: red;
-  &--outlined {
-    background: green;
+  &--outshined {
+    background: aqua;
   }
 }
 </style>

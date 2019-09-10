@@ -21,7 +21,7 @@ export default {
   color: salmon;
   &--capital {
     text-transform: uppercase;
-    color: red;
+    color: blueviolet;
   }
 }
 </style>
