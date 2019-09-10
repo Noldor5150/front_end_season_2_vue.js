@@ -16,16 +16,25 @@ export default {
   },
   computed: {
     attrs() {
-      const defaults = { type: "text" };
       return { ...defaults, ...this.$attrs };
+    },
+    listeners() {
+      return { ...this.listeners, input: this.handleInput };
     }
   },
   methods: {
     handleInput(event) {
-      this.$emit("input", event);
+      this.$emit("input", event.target.value);
+    },
+    handleBlur(event) {
+      this.$emit("blur", event);
     }
   },
   props: {
+    value: {
+      type: String,
+      default: null
+    },
     labelText: {
       type: String,
       default: null

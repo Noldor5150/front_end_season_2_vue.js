@@ -4,7 +4,8 @@
 
     <HOne v-if="!isVisible">Sheize</HOne>
     <HOne v-else :capital="true">Hilo</HOne>
-    <Input label-text="Email" type="email" placeholder="test" @input="onInput" />
+    <Input v-model="email" label-text="Email" type="email" placeholder="test" />
+    {{email}}
   </div>
 </template>
 
@@ -17,14 +18,11 @@ export default {
     Input
   },
   data() {
-    return { isVisible: false };
+    return { isVisible: false, email: null };
   },
   methods: {
     handleClick(event) {
       this.isVisible = !this.isVisible;
-    },
-    onInput(event) {
-      console.log(event);
     }
   }
 };
