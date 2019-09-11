@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <BaseButton @click="handleClick">ALIO</BaseButton>
+    <BaseButton :outshined="aquaButton" @click="handleClick">ALIO</BaseButton>
 
     <HOne v-if="!isVisible">Sheize</HOne>
     <HOne v-else :capital="true">Hilo</HOne>
@@ -18,11 +18,12 @@ export default {
     Input
   },
   data() {
-    return { isVisible: false, email: null };
+    return { isVisible: false, email: null, aquaButton: false };
   },
   methods: {
     handleClick(event) {
       this.isVisible = !this.isVisible;
+      this.aquaButton = !this.aquaButton;
     }
   }
 };

@@ -25,9 +25,6 @@ export default {
   methods: {
     handleInput(event) {
       this.$emit("input", event.target.value);
-    },
-    handleBlur(event) {
-      this.$emit("blur", event);
     }
   },
   props: {
