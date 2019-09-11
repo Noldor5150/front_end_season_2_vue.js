@@ -1,7 +1,13 @@
 <template>
   <div class="text-field">
     <label v-if="labelText" class="text-field__label" :for="`text_field${_uid}`">{{labelText}}</label>
-    <input @input="handleInput" v-bind="$attrs" :id="`text_field${_uid}`" class="text-field__input" />
+    <input
+      @input="handleInput"
+      :value="value"
+      v-bind="$attrs"
+      :id="`text_field${_uid}`"
+      class="text-field__input"
+    />
     <small v-if="helperText" class="text-field__helper">{{helperText}}</small>
   </div>
 </template>
