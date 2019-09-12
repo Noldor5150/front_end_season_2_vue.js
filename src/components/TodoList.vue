@@ -6,12 +6,14 @@
 
 <script>
 export default {
-  name: "TodoList"
-};
+  name: 'TodoList'
+}
 </script>
 
 <style lang="scss">
-.todo-list {
-  list-style: none;
-}
+  .todo-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 </style>

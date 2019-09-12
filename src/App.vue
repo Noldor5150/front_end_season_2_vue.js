@@ -1,78 +1,160 @@
 <template>
   <div class="app">
-    <HOne v-if="!isVisible">Sheize</HOne>
-    <HOne v-else :capital="true">Hilo</HOne>
-    <Input v-model="newTodoText" label-text="test" type="text" placeholder="test" />
-    <!-- {{email}} -->
-    <BaseButton :outshined="aquaButton" @click="handleClick">ALIO</BaseButton>
-    <div class="alio">
-      <TodoList>
-        <TodoListItem
-          v-for="(todo, index) in todos"
-          :key="index"
-          :todo="todo"
-          @change="handleChange(index, $event)"
-          @delete="handleDelete(index, $event)"
-        ></TodoListItem>
-      </TodoList>
+    <div class="surface">
+      <h1 class="headline">
+        <i class="material-icons">
+          assignment_turned_in
+        </i>
+        Todo List
+        <BaseButton>All</BaseButton>
+        <BaseButton>Completed</BaseButton>
+      </h1>
+      <h4 class="headline headline--4"> {{ today }} </h4>
+
+      <div class="surface__new">
+        <BaseTextField
+          v-model="newTodoText"
+          placeholder="What needs to be done?"
+          class="surface__input"
+          @keydown.enter="handleClick"
+        />
+        <BaseButton
+          class="surface__button"
+          @click="handleClick"
+        >
+            <i class="material-icons"> playlist_add </i>
+        </BaseButton>
+      </div>
+
+      <div
+        v-if="todos.length > 0"
+        class="surface__todos"
+      >
+        <TodoList>
+          <TodoListItem
+            v-for="todo in todos"
+            :key="todo.id"
+            :todo="todo"
+            @change="handleChange(todo.id, $event)"
+            @delete="handleDelete(todo.id)"
+          />
+        </TodoList>
+      </div>
     </div>
+
   </div>
 </template>
 
 <script>
+import uniqid from 'uniqid'
+import BaseButton from '@/components/BaseButton'
+import BaseTextField from '@/components/BaseTextField'
+import TodoList from '@/components/TodoList'
+import TodoListItem from '@/components/TodoListItem'
+
 export default {
-  name: "App",
+  name: 'App',
   components: {
     BaseButton,
-    HOne,
-    Input,
+    BaseTextField,
     TodoList,
     TodoListItem
   },
-  data() {
+  data () {
     return {
-      isVisible: false,
-      email: null,
-      aquaButton: false,
       newTodoText: null,
-      todos: [],
-      checked: false
-    };
+      todos: []
+    }
   },
+  computed: {
+    totalTodos () {
+      return this.todos.length
+    },
+    today () {
+      return new Date().toLocaleString('en-GB', { weekday: 'long', month: 'long', day: '2-digit' })
+    }
+  },
+
   methods: {
-    handleClick(event) {
-      this.isVisible = !this.isVisible;
-      this.aquaButton = !this.aquaButton;
-      const todo = { text: this.newTodoText, isDone: false };
-      if (todo.text) {
-        this.todos.push(todo);
-        this.newTodoText = null;
+    handleClick (event) {
+      if (!this.newTodoText) return
+      const todo = {
+        id: uniqid(),
+        time: Date.now(),
+        text: this.newTodoText,
+        done: false
       }
+      this.todos = [...this.todos, todo]
+      this.newTodoText = null
     },
-    handleChange(index, event) {
-      this.todo = this.todos.map((todo, todoIndex) => {
-        if (index === todoIndex) {
-          todo.isDone = event.target.checked;
+
+    handleChange (id, event) {
+      this.todos = this.todos.map(todo => {
+        if (todo.id === id) {
+          todo.done = event.target.checked
         }
-        return todo;
-      });
+        return todo
+      })
     },
-    handleDelete(index, event) {
-      this.todos = this.todos.filter((todo, todoIndex) => {
-        if (index !== todoIndex) {
-          return true;
-        }
-      });
+
+    handleDelete (id) {
+      this.todos = this.todos
+        .filter(todo => todo.id !== id)
     }
   }
-};
-import BaseButton from "@/components/BaseButton";
-import HOne from "@/components/HOne";
-import Input from "@/components/Input";
-import TodoList from "./components/TodoList";
-import TodoListItem from "./components/TodoListItem";
+}
 </script>
 
+<style lang="scss">
+  .app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    padding: 1.5rem;
+  }
 
-<style lang ="scss">
+  .headline {
+    display: flex;
+    align-items: center;
+    font-size: 1.75rem;
+    margin: 0;
+    margin-bottom: 1.5rem;
+
+    &--4 {
+      font-size: 1.15rem;
+      font-weight: normal;
+      color: rgba(black, 0.51);
+    }
+
+    .material-icons {
+      font-size: 2.5rem;
+      margin-right: 0.5rem;
+    }
+  }
+
+  .surface {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 4px;
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+
+    &__new {
+      display: flex;
+      margin-bottom: 1.5rem;
+    }
+
+    &__input {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-right: 0;
+    }
+
+    &__button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
 </style>
