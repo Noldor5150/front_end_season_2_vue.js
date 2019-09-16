@@ -26,9 +26,9 @@
           v-model="newTodoText"
           placeholder="What needs to be done?"
           class="surface__input"
-          @keydown.enter="handleClick"
+          @keydown.enter="addNewTodo"
         />
-        <BaseButton class="surface__button" @click="handleClick">
+        <BaseButton class="surface__button" @click="addNewTodo">
           <i class="material-icons">playlist_add</i>
         </BaseButton>
       </div>
@@ -40,6 +40,7 @@
             :key="todo.id"
             :todo="todo"
             @change="handleChange(todo.id, $event)"
+            @updated="updateTodoItem"
             @delete="handleDelete(todo.id)"
           />
         </TodoList>
@@ -54,6 +55,8 @@ import BaseButton from "@/components/BaseButton";
 import BaseTextField from "@/components/BaseTextField";
 import TodoList from "@/components/TodoList";
 import TodoListItem from "@/components/TodoListItem";
+
+const LS_TODOS = "todos";
 
 export default {
   name: "App",
@@ -70,7 +73,7 @@ export default {
       sortedTypes: ["asc", "desc"],
       filters: ["all", "completed", "inprogress"],
       newTodoText: null,
-      todos: []
+      todos: JSON.parse(localStorage.getItem("LS_TODOS")) || []
     };
   },
   computed: {
@@ -104,15 +107,23 @@ export default {
       });
     }
   },
+  watch: {
+    todos() {
+      this.updateLS();
+    }
+  },
 
   methods: {
+    updateLS() {
+      localStorage.setItem("LS_TODOS", JSON.stringify(this.todos));
+    },
     addFilter(value) {
       this.activeFilter = value;
     },
     setSortedBy(type) {
       this.sortedBy = type;
     },
-    handleClick(event) {
+    addNewTodo(event) {
       if (!this.newTodoText) return;
       const todo = {
         id: uniqid(),
@@ -135,6 +146,14 @@ export default {
 
     handleDelete(id) {
       this.todos = this.todos.filter(todo => todo.id !== id);
+    },
+    updateTodoItem(newTodo) {
+      this.todos = this.todos.map(todo => {
+        if (todo.id === newTodo.id) {
+          return newTodo;
+        }
+        return todo;
+      });
     }
   }
 };
